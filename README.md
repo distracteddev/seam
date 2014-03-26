@@ -2,9 +2,20 @@
 
 # Purpose
 
-I found the current node.js backed CI systems bloated and packed with features I didn't need.
-Furthermore, I wanted something that used the Github Webhook API and didn't need to be fully
-authorized as an application. tl;dr - I wanted one thing done, and I wanted it done well.
+* Provide a simple CI implementatuion that meets the following requirements:
+  * Relies on the Webhook API instead of authentication
+  * Does not wipe node_modules on each deploy
+  * Has a single point of configuration (Your repo's package.json)
+    * Relies on the "npm start" command for deploy scripts
+    * Also see "[npm prestart](https://www.npmjs.org/doc/misc/npm-scripts.html)"
+      if a build step is required (e.g grunt, gulp, etc)
+  * Provides a CLI tool for start/stop/restart/test/logs commands
+    * The response should also be delivered via the CLI
+    * The CLI tool should provide a way of streaming logs directly to a local console
+    * The CLI tool should have no required configuration
+  * Should have the option to enable email notifications
+  * Should have the option to enable native OSX Notifications
+  * Provides a basic UI (In the futre...)
 
 
 # Usage
@@ -65,24 +76,12 @@ Go to the 'settings' page of your repo and add ```http://{yourhost}:{port}/githu
 as a webhook end-point for push events. You should replace ```{yourhost}``` and ```{port}```
 with the appropriate values for your Seam deployment.
 
-# First-Class Features
-
-* Listens for Webhooks and "Builds" then calls NPM Start  (Completed)
-* REST API + Node.js Binary CLI Client (Possibly a streaming client) (TODO)
-* Starts on a custom port defined by config.json or package.json (Completed)
-* Uses forever by default (Completed)
-* Native OSX Notifications (TODO)
-* CLI Commands:      (TODO)
-    * Start
-      * On the server -- Start the Application
-    * Stop
-    * Open
-    * Test
-
-
 # TODO
 
+* Finish REST API
+* Implement CLI
 * Implement locking so that multiple events don't spawn multiple handlers
 * Send response back to Github hook before all steps are completed to avoid timeout
 * Clean up and general refactor to ensure proper separation of concerns and helpful comments
 * Add support for Gitlab Webhook Payloads (Should be done within the githubhook repo)
+* Support a seam.json config file in the repo if a config block is not found in the package.json
