@@ -29,13 +29,14 @@ forever start index.js;
 You will need to set them using your package.json's config property:
 
 ```
+// In your package.json...
 "name": 'Some Package Name',
 "config": {
   "PORT": 8080
   "NODE_ENV": "prod"
 }
 ```
-or
+or if you are already using the config block for something else, you can use the more verbose option
 ```
 // In your package.json...
 "name": 'Some Package Name',
