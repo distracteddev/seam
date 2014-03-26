@@ -10,7 +10,7 @@ authorized as an application. Simply put, I wanted one thing done, and I wanted 
 # Usage
 
 ```
-npm install git@github.com:distracteddev/seam.git;
+npm install https://github.com/distracteddev/seam/tarball/master;
 cd seam;
 forever start index.js;
 ```
