@@ -60,8 +60,9 @@ or if you are already using the config block for something else, you can use the
 
 #### Pointing Github to Seam
 
-Go to the 'settings' of your Repo and add http://{yourhost}:{port}/github/callback as a webhook end point for push events only
-
+Go to the 'settings' page of your repo and add ```http://{yourhost}:{port}/github/callback```
+as a webhook end-point for push events. You should replace ```{yourhost}``` and ```{port}```
+with the appropriate values for your Seam deployment.
 
 # First-Class Features
 
