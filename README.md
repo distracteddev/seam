@@ -9,14 +9,21 @@ authorized as an application. Simply put, I wanted one thing done, and I wanted 
 
 # Usage
 
-### Configuration
+There are two steps to setting up seam:
+
+1. Configure & Start the SEAM server
+2. Configure Your repos to be deployed via SEAM
+
+## Configuring & Starting Seam
+
+#### Configuration
 
 You can configure Seam by editing the config.json found in the root of the repo.
 
 Configurable Options:
 * port (Default: 8002);
 
-### Starting Seam
+#### Starting Seam
 
 ```
 git clone git@github.com:distracteddev/seam.git;
@@ -24,7 +31,10 @@ cd seam;
 npm install;
 forever start index.js;
 ```
-### If your Node app requires specific ENV variables...
+
+## Setting up your repos to be deployable by SEAM
+
+#### Add Required ENV Variables to your package's package.json file
 
 You will need to set them using your package.json's config property:
 
@@ -48,9 +58,9 @@ or if you are already using the config block for something else, you can use the
 }
 ```
 
-### Pointing Github to Seam
+#### Pointing Github to Seam
 
-Go to the 'settings' of your Repo and add http://<yourhost>:<port>/github/callback as a webhook end point for push events only
+Go to the 'settings' of your Repo and add http://{yourhost}:{port}/github/callback as a webhook end point for push events only
 
 
 # First-Class Features
@@ -73,11 +83,3 @@ Go to the 'settings' of your Repo and add http://<yourhost>:<port>/github/callba
 * Implement locking so that multiple events don't spawn multiple handlers
 * Send response back to Github hook before all steps are completed to avoid timeout
 * Clean up and general refactor to ensure proper separation of concerns and helpful comments
-
-# Modules Used:
-
-* yargs
-* ShellJS
-* Forever
-* Express
-* Node-OSX-Notifier
