@@ -9,11 +9,24 @@ authorized as an application. Simply put, I wanted one thing done, and I wanted 
 
 # Usage
 
+### Configuration
+
+You can configure Seam by editing the config.json found in the root of the repo.
+
+Configurable Options:
+* port (Default: 8002);
+
+### Starting Seam
+
 ```
 git clone git@github.com:distracteddev/seam.git;
 cd seam;
 forever start index.js;
 ```
+
+### Pointing Github to Seam
+
+Go to the 'settings' of your Repo and add http://<yourhost>:<port>/github/callback as a webhook end point for push events only
 
 
 # First-Class Features
