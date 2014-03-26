@@ -23,5 +23,5 @@ server.get('/repo/:owner/:name', getRepo);
 server.post('/repo/:owner/:name', postRepo);
 
 server.listen(serverPort, function() {
-  console.log('%s listening at %s', server.name, server.url);
+  console.log('[HttpHook] listening for http requests on', server.url);
 });

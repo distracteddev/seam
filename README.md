@@ -1,4 +1,4 @@
-# Github Auto Update (Seam v2)
+# Seam (v2)
 
 # Purpose
 
@@ -7,33 +7,28 @@ Furthermore, I wanted something that used the Github Webhook API and didn't need
 authorized as an application. Simply put, I wanted one thing done, and I wanted it done well.
 
 
+# Usage
+
+```
+npm install git@github.com:distracteddev/seam.git;
+cd seam;
+forever start index.js;
+```
+
+
 # First-Class Features
 
-* Listens for Webhooks and "Builds" then calls NPM Start
-* REST API + Node.js Binary CLI Client (Possibly a streaming client)
-* Starts on a custom port defined by config.json or package.json
-* Uses forever by default (Should use forever watch)
-* npm installed into the same folder as your app + git repo
-* use env var or local cofig via binary for hostname;
-* Native OSX Notifications
-* Commands:
+* Listens for Webhooks and "Builds" then calls NPM Start  (Completed)
+* REST API + Node.js Binary CLI Client (Possibly a streaming client) (TODO)
+* Starts on a custom port defined by config.json or package.json (Completed)
+* Uses forever by default (Completed)
+* Native OSX Notifications (TODO)
+* CLI Commands:      (TODO)
     * Start
       * On the server -- Start the Application
     * Stop
     * Open
     * Test
-
-
-# Source Organization
-
-* Repo.js                                                 (Helpers to Pull, npm instll, and test)
-* HookHandler.js                                          (Server)
-* CommandServer.js                                        (Server)
-* Client.js                                               (Command Line Client)
-* Config.js                                               (CLI Configuration)
-* A Binary Version
-* Notifier.js                                             (Node-OSX-Notifier Wrapper)
-* Mailer.js                                               (Email Notifications & Custom Notification Hooks -- e.g Slack)
 
 
 # Modules Used:
