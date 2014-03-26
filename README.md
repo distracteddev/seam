@@ -9,7 +9,7 @@ authorized as an application. tl;dr - I wanted one thing done, and I wanted it d
 
 # Usage
 
-There are two steps to setting up seam:
+There are two steps to setting up Seam:
 
 1. Configure & Start the Seam server
 2. Configure Your Repos to be Deployed via Seam
@@ -34,9 +34,10 @@ forever start index.js;
 
 ## Configure Your Repos to be Deployed via Seam
 
-#### Add Required ENV Variables to your package's package.json file
+#### App Specific ENV Variables
 
-You will need to set them using your package.json's config property:
+You will need to set any specific ENV variables needed using your
+package.json's config property:
 
 ```
 // In your package.json...
@@ -58,7 +59,7 @@ or if you are already using the config block for something else, you can use the
 }
 ```
 
-#### Pointing Github to Seam
+#### Pointing Your Repo's Webhook to Seam
 
 Go to the 'settings' page of your repo and add ```http://{yourhost}:{port}/github/callback```
 as a webhook end-point for push events. You should replace ```{yourhost}``` and ```{port}```
@@ -84,3 +85,4 @@ with the appropriate values for your Seam deployment.
 * Implement locking so that multiple events don't spawn multiple handlers
 * Send response back to Github hook before all steps are completed to avoid timeout
 * Clean up and general refactor to ensure proper separation of concerns and helpful comments
+* Add support for Gitlab Webhook Payloads (Should be done within the githubhook repo)
