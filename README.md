@@ -11,8 +11,8 @@ authorized as an application. Simply put, I wanted one thing done, and I wanted 
 
 There are two steps to setting up seam:
 
-1. Configure & Start the SEAM server
-2. Configure Your repos to be deployed via SEAM
+1. Configure & Start the Seam server
+2. Configure Your Repos to be Deployed via Seam
 
 ## Configuring & Starting Seam
 
@@ -32,7 +32,7 @@ npm install;
 forever start index.js;
 ```
 
-## Setting up your repos to be deployable by SEAM
+## Configure Your Repos to be Deployed via Seam
 
 #### Add Required ENV Variables to your package's package.json file
 
