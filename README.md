@@ -4,7 +4,7 @@
 
 I found the current node.js backed CI systems bloated and packed with features I didn't need.
 Furthermore, I wanted something that used the Github Webhook API and didn't need to be fully
-authorized as an application. Simply put, I wanted one thing done, and I wanted it done well.
+authorized as an application. tl;dr - I wanted one thing done, and I wanted it done well.
 
 
 # Usage
