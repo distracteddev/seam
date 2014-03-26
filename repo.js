@@ -57,13 +57,31 @@ Repo.prototype.start = function() {
   cd(this.absPath);
   var pkgDotJSON = require(path.join(this.absPath, 'package.json'));
   console.log(pkgDotJSON.config);
-  var port = pkgDotJSON.config.port
+  if (!pkgDotJSON.config) {
+    throw new Error("No npm-config found for repo", this.folderName);
+  }
+  var port = (
+               pkgDotJSON.config.port ||
+               pkgDotJSON.config.PORT ||
+               (
+                pkgDotJSON.config.SEAM_ENV &&
+                  (
+                    pkgDotJSON.config.SEAM_ENV.port ||
+                    pkgDotJSON.config.SEAM_ENV.PORT
+                  )
+               )
+             );
   if (!isPortOpen(port)) {
     throw new Error("Port " + port + " is not available");
   }
-  var foreverOpts = 'forever start -c "npm start" -e err.log -o out.log -l forever.log -a .'
-  env['DEBUG'] = true;
+  var foreverOpts = 'forever start -c "npm start" -e err.log -o out.log -l forever.log -a .';
   env['PORT'] = port;
+  var CUSTOM_ENV = pkgDotJSON.config.SEAM_ENV || pkgDotJSON.config;
+  if (CUSTOM_ENV) {
+    for (key in CUSTOM_ENV) {
+      env[key] = CUSTOM_ENV[key];
+    }
+  }
   var startCommand = foreverOpts || 'PORT=' + port + ' ' + foreverOpts;
   console.log('Start Command', startCommand);
   var result = exec(startCommand, {silent: SILENT});
