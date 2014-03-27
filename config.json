@@ -1,3 +1,4 @@
 {
-  "port": 8002
+    "port": 8002,
+    "seam_url": "http://localhost:8003"
 }

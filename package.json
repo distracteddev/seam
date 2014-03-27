@@ -6,12 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "seam": "./cli.js"
+  },
   "author": "Zeus Lalkaka",
   "license": "ISC",
   "dependencies": {
     "shelljs": "^0.2.6",
     "githubhook": "^0.5.1",
-    "restify": "^2.6.3"
+    "restify": "^2.6.3",
+    "prompt": "^0.2.12"
   },
   "devDependencies": {
     "expresso": "^0.9.2"

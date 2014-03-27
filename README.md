@@ -23,7 +23,9 @@
 There are two steps to setting up Seam:
 
 1. Configure & Start the Seam server
+  * YOU ONLY DO THIS ON ONCE, ON YOUR SERVER
 2. Configure Your Repos to be Deployed via Seam
+  * DO THIS FOR EVERY REPO YOU WANT DEPLOYED
 
 ## Configuring & Starting Seam
 

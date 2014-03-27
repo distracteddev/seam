@@ -27,14 +27,11 @@ Repo.prototype.clone = function() {
       throw new Error("New Repo Asked to Clone without a remote specified");
     }
     var result = exec('git clone ' + this.remote, {silent: false});
-    if (result.code === 128) {
-      // Just in case our earlier check failed...
-      console.log('Repo already cloned, updating now...');
-      this.update();
-    } else if (result.code === 0) {
+    if (result.code === 0) {
       console.log('Repo Successfully Cloned');
     } else {
-      throw new Error("Repo.Clone Unexpectedly Failed");
+      console.error("Repo.Clone Unexpectedly Failed with code " + result.code);
+      throw new Error(result.output + '\nRepo URL: ' + this.remote);
     }
   }
 
@@ -51,9 +48,15 @@ Repo.prototype.update = function() {
   }
 }
 
+// TODO: Refactor this function
 Repo.prototype.start = function() {
-  this.npmInstall();
-  // this.build();
+  // Has the repo been cloned before?
+  if (!test('-e', this.absPath)) {
+    console.log('Tried to start uncloned repo, cloning now');
+    this.clone();
+  }
+
+  // Get the Repo's Configuration and Port
   cd(this.absPath);
   var pkgDotJSON = require(path.join(this.absPath, 'package.json'));
   console.log(pkgDotJSON.config);
@@ -71,9 +74,16 @@ Repo.prototype.start = function() {
                   )
                )
              );
+  this.port = port;
+  // Check to see if the repo or another app has already been started on this port.
   if (!isPortOpen(port)) {
-    throw new Error("Port " + port + " is not available");
+    var err = new Error("Repo Already Started or Port " + port + " is not available");
+    err.code = "PORTINUSE"
+    throw err;
   }
+
+  // The repo has been cloned and the port is open, now we npm-install
+  this.npmInstall();
   var foreverOpts = 'forever start -c "npm start" -e err.log -o out.log -l forever.log -a .';
   env['PORT'] = port;
   var CUSTOM_ENV = pkgDotJSON.config.SEAM_ENV || pkgDotJSON.config;
@@ -82,6 +92,8 @@ Repo.prototype.start = function() {
       env[key] = CUSTOM_ENV[key];
     }
   }
+
+  // We can now launch the repo with forever
   var startCommand = foreverOpts || 'PORT=' + port + ' ' + foreverOpts;
   console.log('Start Command', startCommand);
   var result = exec(startCommand, {silent: SILENT});
@@ -94,6 +106,10 @@ Repo.prototype.start = function() {
 }
 
 Repo.prototype.restart = function() {
+  if (!test('-e', this.absPath)) {
+    throw new Error('Cannot restart a repo that has never been started');
+    return;
+  }
   cd(this.absPath);
   var restartCmd = 'forever restart ' + this.absPath;
   var result = exec(restartCmd, {silent: SILENT});
@@ -105,21 +121,58 @@ Repo.prototype.restart = function() {
   }
 }
 
+Repo.prototype.stop = function() {
+  if (!test('-e', this.absPath)) {
+    throw new Error('Cannot stop a repo that has never been started');
+    return;
+  }
+  cd(this.absPath);
+  var stopCmd = 'forever stop ' + this.absPath;
+  var result = exec(stopCmd, {silent: SILENT});
+  if (result.code !== 0) {
+    console.error(result.output);
+    throw new Error("Stopping repo " + this.folderName + " failed\n" + result.output);
+  } else {
+    console.log('Repo', this.folderName, 'Successfully Stopped');
+  }
+}
+
+Repo.prototype.clean = function() {
+  if (!test('-d', this.absPath)) {
+    throw new Error('Cannot clean a repo that has never been cloned or started');
+    return;
+  }
+  try {
+    this.stop();
+  } catch (e) {
+    // Repo was never started
+  }
+  var result = rm('-rf', this.absPath);
+  if (result && result.code !== 0) {
+    throw new Error('Could not clean ' + this.absPath + '\n' + result.output);
+  }
+}
+
+Repo.prototype.logs = function(n) {
+  if (!test('-e', this.absPath)) {
+    throw new Error('Cannot Get Logs for a Repo that has never been started');
+    return;
+  }
+  cd(this.absPath)
+  var outFile = 'out.log';
+  var errFile = 'err.log';
+  n = n || 100;
+  var command = ['tail -n', n, '-f', outFile, errFile].join(' ');
+  var child = exec(command, {async:true, silent: true});
+  return child;
+}
+
 Repo.prototype.npmInstall = function() {
   console.log('Running npm install');
   cd(this.absPath);
   var result = exec('npm install');
   if (result.code !== 0) {
     throw new error('Unexpected Error while npm installing Repo', this.folderName);
-  }
-}
-
-Repo.prototype.build = function() {
-  console.log('Running npm build');
-  cd(this.absPath);
-  var result = exec('npm run-script build');
-  if (result.code !== 0) {
-    throw new error('Unexpected Error while building Repo', this.folderName);
   }
 }
 
