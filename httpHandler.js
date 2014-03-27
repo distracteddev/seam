@@ -11,6 +11,7 @@ function info(req, res, next) {
 
 function start(req, res, next) {
   try {
+    res.contentType = 'text';
     req.repo.start();
     res.send('Repo ' + req.repo.remote + ' started');
   } catch(e) {
@@ -22,6 +23,7 @@ function start(req, res, next) {
 function stop(req, res, next) {
   try {
     req.repo.stop();
+    res.contentType = 'text';
     res.send('Repo ' + req.repo.remote + ' stopped');
   } catch(e) {
     res.contentType = 'text';
@@ -32,6 +34,7 @@ function stop(req, res, next) {
 function restart(req, res, next) {
   try {
     req.repo.restart();
+    res.contentType = 'text';
     res.send('Repo ' + req.repo.remote + ' restarted');
   } catch(e) {
     res.contentType = 'text';
@@ -42,6 +45,7 @@ function restart(req, res, next) {
 function clean(req, res, next) {
   try {
     req.repo.clean();
+    res.contentType = 'text';
     res.send('Repo ' + req.repo.remote + ' cleaned')
   } catch(e) {
     res.contentType = 'text';

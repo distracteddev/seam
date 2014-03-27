@@ -72,9 +72,12 @@ SeamClient.prototype.open = function() {
 
 function request(command) {
   var targetUrl = url.resolve(this.baseUrl, [command, this.repoOwner, this.repoName].join('/'));
-  console.log('GET', targetUrl);
   var req = http.get(targetUrl, function(res) {
-    res.pipe(process.stdout);
+    res.on('data', function(data) {
+      if (data.toString().trim().length > 0) {
+        console.log(data.toString().trim());
+      }
+    });
   })
   var self = this;
   req.on('error', function(e) {
