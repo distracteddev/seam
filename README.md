@@ -32,9 +32,12 @@ There are two steps to setting up Seam:
 #### Configuration
 
 You can configure Seam by editing the config.json found in the root of the repo.
+* NOTE: If you wanto to use a specific directory for the repos created by Seam,
+  provide the repoDir option in the config.json
 
 Configurable Options:
-* port (Default: 8002);
+* port (Default: 8002)
+* repoDir (Default: ~/apps)
 
 #### Starting Seam
 
