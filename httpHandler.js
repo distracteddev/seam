@@ -36,6 +36,7 @@ function restart(req, res, next) {
   } catch(e) {
     res.contentType = 'text';
     res.send(404, e.message);
+  }
 }
 
 function clean(req, res, next) {
