@@ -7,7 +7,7 @@
   * Does not wipe node_modules on each deploy
   * Has a single point of configuration (Your repo's package.json)
     * Relies on the "npm start" command for deploy scripts
-    * Also see "[npm prestart](https://www.npmjs.org/doc/misc/npm-scripts.html)"
+    * Also see "[npm run-script build](https://www.npmjs.org/doc/misc/npm-scripts.html)"
       if a build step is required (e.g grunt, gulp, etc)
   * Provides a CLI tool for start/stop/restart/test/logs commands
     * The response should also be delivered via the CLI

@@ -84,6 +84,7 @@ Repo.prototype.start = function() {
 
   // The repo has been cloned and the port is open, now we npm-install
   this.npmInstall();
+  this.build();
   var foreverOpts = 'forever start -c "npm start" -e err.log -o out.log -l forever.log -a .';
   env['PORT'] = port;
   var CUSTOM_ENV = pkgDotJSON.config.SEAM_ENV || pkgDotJSON.config;
@@ -171,6 +172,15 @@ Repo.prototype.npmInstall = function() {
   console.log('Running npm install');
   cd(this.absPath);
   var result = exec('npm install');
+  if (result.code !== 0) {
+    throw new error('Unexpected Error while npm installing Repo', this.folderName);
+  }
+}
+
+Repo.prototype.build = function() {
+  console.log('Running npm run-script build');
+  cd(this.absPath);
+  var result = exec('npm run-script build');
   if (result.code !== 0) {
     throw new error('Unexpected Error while npm installing Repo', this.folderName);
   }
