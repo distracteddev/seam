@@ -1,4 +1,4 @@
 {
     "port": 8002,
-    "seam_url": "http://protostyle.pixate.com:8003"
+    "seam_url": "http://yourserverdomain.com:8003"
 }
