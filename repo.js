@@ -7,7 +7,7 @@ if (!which('git')) {
   exit(1);
 }
 
-var Repo = function(repoDir, remoteUri) {
+var Repo = function(repoDir, remoteUri, logger) {
   if (!repoDir) {
     throw new Error("A Repo must be created with a repoDir");
   }
@@ -15,6 +15,7 @@ var Repo = function(repoDir, remoteUri) {
   this.remote = remoteUri;
   this.folderName = path.basename(remoteUri, '.git');
   this.absPath = path.join(this.path, this.folderName);
+  this.logger = logger;
 }
 
 Repo.prototype.clone = function() {
@@ -75,6 +76,10 @@ Repo.prototype.start = function() {
                )
              );
   this.port = port;
+  // The repo has been cloned and now we npm-install and build
+  this.npmInstall();
+  this.build();
+
   // Check to see if the repo or another app has already been started on this port.
   if (!isPortOpen(port)) {
     var err = new Error("Repo Already Started or Port " + port + " is not available");
@@ -82,9 +87,6 @@ Repo.prototype.start = function() {
     throw err;
   }
 
-  // The repo has been cloned and the port is open, now we npm-install
-  this.npmInstall();
-  this.build();
   var foreverOpts = 'forever start -c "npm start" -e err.log -o out.log -l forever.log -a .';
   env['PORT'] = port;
   var CUSTOM_ENV = pkgDotJSON.config.SEAM_ENV || pkgDotJSON.config;
