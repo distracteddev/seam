@@ -1,5 +1,6 @@
 require('shelljs/global');
 var path = require('path');
+var config = require('./config');
 var SILENT = process.env.DEBUG || true;
 
 if (!which('git')) {
@@ -16,6 +17,12 @@ var Repo = function(repoDir, remoteUri, logger) {
   this.folderName = path.basename(remoteUri, '.git');
   this.absPath = path.join(this.path, this.folderName);
   this.logger = logger;
+
+  var branch = 'master';
+  if (config[this.folderName] && config[this.folderName].branch) {
+    branch = config[this.folderName].branch
+  }
+  this.branch = branch;
 }
 
 Repo.prototype.clone = function() {
@@ -34,13 +41,15 @@ Repo.prototype.clone = function() {
       console.error("Repo.Clone Unexpectedly Failed with code " + result.code);
       throw new Error(result.output + '\nRepo URL: ' + this.remote);
     }
+    this.update();
   }
 
 }
 
 Repo.prototype.update = function() {
   cd(this.absPath);
-  var result = exec('git pull origin master', {silent: SILENT});
+  var cmd = 'git pull origin ' + this.branch;
+  var result = exec(cmd, {silent: SILENT});
   if (result.code !== 0) {
     console.error(result.output);
     throw new Error("Unexpected Error while Updating Repo", this);

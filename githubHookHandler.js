@@ -4,6 +4,7 @@ var serverPort = require('./config.json').port;
 var repoDir    = require('./config.json').repoDir || path.join(process.env.HOME, 'apps');
 var github = githubhook({logger: console, port: serverPort});
 var Repo = require('./repo');
+var config = require('./config');
 
 github.listen();
 
@@ -11,8 +12,14 @@ github.on('push', function (repo, ref, data) {
   console.log('** Github Push Detected **');
   console.log('repo', repo);
   console.log('ref', ref);
+  var branch = ref.split('/').pop();
+  console.log('branch', branch)
   console.log('data', data);
-  updateRepo(getGithubURL(data.repository));
+  if (config[repo] && config[repo].branch === branch) {
+    updateRepo(getGithubURL(data.repository));
+  } else if (!config[repo] || !config[repo].branch) {
+    updateRepo(getGithubURL(data.repository));
+  }
 });
 
 function getGithubURL(repository) {

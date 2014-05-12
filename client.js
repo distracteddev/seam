@@ -16,7 +16,7 @@ function SeamClient(config) {
 
 function getRepoDetails() {
   var gitUrl =  exec('git config --get remote.origin.url').output;
-  var matches = RegExp('(.+):(\\w+)/(.+)\\.?').exec(gitUrl);
+  var matches = RegExp('(.+):(\\w+)/([^.]+)').exec(gitUrl);
   return {
     repoOwner: matches[2],
     repoName:  matches[3]
