@@ -36,19 +36,23 @@ Repo.prototype.clone = function() {
     }
     var result = exec('git clone ' + this.remote, {silent: false});
     if (result.code === 0) {
+      this.update();
       console.log('Repo Successfully Cloned');
     } else {
       console.error("Repo.Clone Unexpectedly Failed with code " + result.code);
       throw new Error(result.output + '\nRepo URL: ' + this.remote);
     }
-    this.update();
   }
 
 }
 
 Repo.prototype.update = function() {
   cd(this.absPath);
-  var cmd = 'git pull origin ' + this.branch;
+  var cmd = [
+    'git checkout ' + this,branch;
+    'git pull origin ' + this.branch;
+  ].join('; ');
+
   var result = exec(cmd, {silent: SILENT});
   if (result.code !== 0) {
     console.error(result.output);
